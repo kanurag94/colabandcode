@@ -1,0 +1,66 @@
+<html>
+  <head>
+    <title>Code Editor</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      body {
+        text-align: center;
+      }
+
+      textarea {
+        width: 33%;
+        min-height: 250px;
+        overflow: scroll;
+        background-color: black;
+        font-family: Courier, sans-serif;
+        font-size: 14px;
+        color: fff;
+      }
+
+      iframe {
+        bottom: 0;
+        position: relative;
+        width: 100%;
+        height: 35em;
+      }
+    </style>
+  </head>
+
+  <body>
+    <textarea id="html" placeholder="HTML"></textarea>
+    <textarea id="css" placeholder="CSS"></textarea>
+    <textarea id="js" placeholder="JavaScript"></textarea>
+    <iframe id="code"></iframe>
+    <script type="text/javascript" src="./layout.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      var socket = io();
+      var htmleditor = document.getElementById("html");
+      htmleditor.addEventListener("keyup", (e) => {
+        socket.emit("htmlmsg", htmleditor.value);
+      });
+      socket.on("htmlmsg", (data) => {
+        htmleditor.value = data;
+        writeUpValues();
+      });
+
+      var csseditor = document.getElementById("css");
+      csseditor.addEventListener("keyup", (e) => {
+        socket.emit("cssmsg", csseditor.value);
+      });
+      socket.on("cssmsg", (data) => {
+        csseditor.value = data;
+        writeUpValues();
+      });
+
+      var jseditor = document.getElementById("js");
+      jseditor.addEventListener("keyup", (e) => {
+        socket.emit("jsmsg", jseditor.value);
+      });
+      socket.on("jsmsg", (data) => {
+        jseditor.value = data;
+        writeUpValues();
+      });
+    </script>
+  </body>
+</html>
